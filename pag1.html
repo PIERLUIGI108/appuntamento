@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Una domanda importante 💖</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: pink;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+  }
+  .container {
+    position: relative;
+    width: min(92vw, 640px);
+    min-height: 430px;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(200, 60, 120, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 30px;
+  }
+  h1 {
+    color: #c2185b;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    margin: 0 0 10px;
+  }
+  .sub {
+    color: #a13363;
+    margin: 0 0 35px;
+    font-size: 1.05rem;
+  }
+  .buttons {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 14px 42px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #si {
+    background: #e91e63;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+  }
+  #si:hover { transform: scale(1.08); }
+  #no {
+    background: #fff;
+    color: #c2185b;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transition: transform .15s ease;
+    will-change: transform;
+  }
+  .hint {
+    margin-top: 35px;
+    font-size: .85rem;
+    color: #b05070;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="container">
+  <h1>Vuoi venire a fare un giro con me? 🌸</h1>
+  <p class="sub">Scegli con calma... 😏</p>
+
+  <div class="buttons">
+    <!-- MODIFICATO: ora "Sì" porta alla nuova pagina scelta.html -->
+    <button id="si" type="button" onclick="window.location.href='scelta.html'">Sì 💖</button>
+    <button id="no" type="button">No 😢</button>
+  </div>
+
+  <p class="hint">(Il "No" è un po' timido... prova a prenderlo!)</p>
+</div>
+
+<script>
+  const container = document.getElementById('container');
+  const noBtn = document.getElementById('no');
+  let base = null;
+
+  function measure() {
+    noBtn.style.transition = 'none';
+    noBtn.style.transform = 'none';
+    const c = container.getBoundingClientRect();
+    const b = noBtn.getBoundingClientRect();
+    base = {
+      left: b.left - c.left,
+      top:  b.top  - c.top,
+      w: b.width,
+      h: b.height,
+      cw: c.width,
+      ch: c.height
+    };
+    requestAnimationFrame(() => { noBtn.style.transition = ''; });
+  }
+
+  function moveNo() {
+    if (!base) measure();
+    const margin = 10;
+    const minX = margin - base.left;
+    const maxX = base.cw - base.w - margin - base.left;
+    const minY = margin - base.top;
+    const maxY = base.ch - base.h - margin - base.top;
+
+    const x = minX + Math.random() * Math.max(0, maxX - minX);
+    const y = minY + Math.random() * Math.max(0, maxY - minY);
+
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  document.addEventListener('pointermove', (e) => {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    if (!base) measure();
+    const b = noBtn.getBoundingClientRect();
+    const cx = b.left + b.width / 2;
+    const cy = b.top  + b.height / 2;
+    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+    if (dist < 130) moveNo();
+  });
+
+  noBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    moveNo();
+  });
+
+  noBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    moveNo();
+  });
+
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', () => { base = null; measure(); });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perfetto! 📅</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #ff9ac1, #ffd1e3 60%, #fff0f6);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    overflow-x: hidden; text-align: center; padding: 20px;
+  }
+  .card {
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(6px);
+    padding: 50px 40px;
+    border-radius: 30px;
+    box-shadow: 0 25px 60px rgba(200,60,120,0.25);
+    max-width: 520px;
+    width: 100%;
+    animation: pop .6s ease;
+  }
+  @keyframes pop {
+    from { transform: scale(.7); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+  }
+  h1 { color: #c2185b; font-size: clamp(1.8rem,5vw,2.6rem); margin: 0 0 8px; }
+  .scelta {
+    display: inline-block;
+    background: #ffe3ef;
+    color: #c2185b;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin: 0 0 25px;
+    font-size: 1rem;
+  }
+  p { color: #a13363; font-size: 1.05rem; margin: 0 0 25px; line-height: 1.5; }
+  .campo { text-align: left; margin-bottom: 20px; }
+  label {
+    display: block;
+    color: #a13363;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: .95rem;
+  }
+  input[type="date"],
+  input[type="time"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #ffc1da;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    color: #7a2a4a;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+  }
+  input[type="date"]:focus,
+  input[type="time"]:focus { border-color: #e91e63; }
+
+  .btn {
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    background: #e91e63;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(233,30,99,0.4);
+    transition: transform .15s;
+  }
+  .btn:hover  { transform: scale(1.04); }
+  .btn:active { transform: scale(.97); }
+
+  .link-avanti {
+    display: inline-block;
+    margin-top: 14px;
+    color: #c2185b;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  .link-avanti:hover { text-decoration: underline; }
+
+  .back {
+    display: inline-block;
+    margin-top: 14px;
+    margin-left: 16px;
+    color: #b05070;
+    text-decoration: none;
+    font-size: .9rem;
+  }
+  .back:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Evviva! 🎉</h1>
+  <div class="scelta" id="sceltaLuogo">Hai scelto: —</div>
+
+  <p>Scegli il <strong>giorno</strong> e l'<strong>ora</strong> dell'appuntamento 💖</p>
+
+  <div class="campo">
+    <label for="giorno">📅 Giorno</label>
+    <input type="date" id="giorno">
+  </div>
+
+  <div class="campo">
+    <label for="ora">⏰ Ora</label>
+    <input type="time" id="ora">
+  </div>
+
+  <button class="btn" id="conferma" type="button">Conferma ➜</button>
+  <br>
+  <a class="link-avanti" id="avantiLink" href="terza.html">Vai avanti ➜</a>
+  <a class="back" href="scelta.html">← Cambia scelta</a>
+</div>
+
+<script>
+  // 1) Legge il luogo scelto dall'URL (es. si.html?luogo=Cinema)
+  const params = new URLSearchParams(window.location.search);
+  const luogo = params.get('luogo') || 'Non specificato';
+  document.getElementById('sceltaLuogo').textContent = 'Hai scelto: ' + luogo;
+
+  // 2) Pre-compila data (oggi) e ora (adesso)
+  const giorno = document.getElementById('giorno');
+  const ora    = document.getElementById('ora');
+  const oggi   = new Date();
+  giorno.value = oggi.toISOString().split('T')[0];
+  ora.value    = String(oggi.getHours()).padStart(2, '0') + ':' +
+                 String(oggi.getMinutes()).padStart(2, '0');
+
+  // 3) Aggiorna il link "Vai avanti" con luogo, giorno e ora
+  function aggiornaLink() {
+    document.getElementById('avantiLink').href =
+      'terza.html?luogo='  + encodeURIComponent(luogo) +
+      '&giorno='           + encodeURIComponent(giorno.value) +
+      '&ora='              + encodeURIComponent(ora.value);
+  }
+  aggiornaLink();
+  giorno.addEventListener('change', aggiornaLink);
+  ora.addEventListener('change', aggiornaLink);
+
+  // 4) Pulsante "Conferma" → va alla terza pagina
+  document.getElementById('conferma').addEventListener('click', () => {
+    window.location.href = document.getElementById('avantiLink').href;
+  });
+</script>
+
+</body>
+</html>

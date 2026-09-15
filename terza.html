@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grazie 💗</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: linear-gradient(160deg, #ffe3ef, #ffc1da 70%, #ff9ac1);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 55px 45px;
+    border-radius: 30px;
+    box-shadow: 0 25px 60px rgba(200, 60, 120, 0.25);
+    max-width: 620px;
+    width: 100%;
+    animation: fade .8s ease;
+  }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  h1 {
+    color: #c2185b;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin: 0 0 15px;
+  }
+  p {
+    color: #a13363;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0 0 18px;
+  }
+  .big { font-size: 3.5rem; margin: 10px 0 25px; }
+  .riepilogo {
+    background: #ffe3ef;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0 30px;
+    text-align: left;
+    display: none;
+  }
+  .riepilogo.visibile { display: block; }
+  .riepilogo p { margin: 8px 0; font-size: 1.05rem; }
+  .riepilogo strong { color: #c2185b; }
+  a.btn {
+    display: inline-block;
+    text-decoration: none;
+    background: #e91e63;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 13px 34px;
+    border-radius: 50px;
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+    transition: transform .15s;
+  }
+  a.btn:hover { transform: scale(1.07); }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="big">💗✨🌸</div>
+  <h1>Grazie per aver giocato!</h1>
+  <p>Questa era l'ultima pagina del sito.</p>
+
+  <div class="riepilogo" id="riepilogo">
+    <p><strong>📍 Luogo:</strong> <span id="rLuogo">—</span></p>
+    <p><strong>📅 Giorno:</strong> <span id="rGiorno">—</span></p>
+    <p><strong>⏰ Ora:</strong> <span id="rOra">—</span></p>
+  </div>
+
+  <p>Speriamo ti sia piaciuto il piccolo scherzo del pulsante "No" che scappava via 😄</p>
+  <a class="btn" href="index.html">↺ Torna all'inizio</a>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const luogo = params.get('luogo');
+  const giorno = params.get('giorno');
+  const ora = params.get('ora');
+
+  if (luogo || giorno || ora) {
+    document.getElementById('riepilogo').classList.add('visibile');
+    if (luogo)  document.getElementById('rLuogo').textContent  = luogo;
+    if (giorno) document.getElementById('rGiorno').textContent = giorno;
+    if (ora)    document.getElementById('rOra').textContent    = ora;
+  }
+</script>
+
+</body>
+</html>
